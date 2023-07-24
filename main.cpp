@@ -3,13 +3,15 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include "msgpack.hpp"
 
 const int TICKS_PER_SECOND = 20;
 
-struct PlayerPos {
+struct PlayerMove {
 	float x;
 	float y;
 	float z;
+    MSGPACK_DEFINE(x, y, z);
 };
 
 int OnUpdate(ENetHost* server) {
@@ -21,30 +23,50 @@ int OnUpdate(ENetHost* server) {
         std::cout << "enet_host_service" << std::endl;
         switch (event.type)
         {
-        case ENET_EVENT_TYPE_CONNECT:
-            printf("A new client connected from %x:%u.\n",
-                event.peer->address.host,
-                event.peer->address.port);
-            /* Store any relevant client information here. */
-            //event.peer->data = "Client information";
-            break;
-        case ENET_EVENT_TYPE_RECEIVE:
-            //cast packet data to struct PlayerPos
-            //PlayerPos* playerPos = 
-            printf("A packet of length %u containing %s was received from %s on channel %u.\n",
-                event.packet->dataLength,
-                (PlayerPos*)event.packet->data,
-                event.peer->data,
-                event.channelID);
-            /* Clean up the packet now that we're done using it. */
-            enet_packet_destroy(event.packet);
+            case ENET_EVENT_TYPE_CONNECT:
+                printf("A new client connected from %x:%u.\n",
+                    event.peer->address.host,
+                    event.peer->address.port);
+                /* Store any relevant client information here. */
+                //event.peer->data = "Client information";
+                break;
+            case ENET_EVENT_TYPE_RECEIVE:
+            {
+                std::string str((char*)event.packet->data);
 
-            break;
+                //print the event.packet->data
+                std::cout << event.packet->data << std::endl;
 
-        case ENET_EVENT_TYPE_DISCONNECT:
-            printf("%s disconnected.\n", event.peer->data);
-            /* Reset the peer's client information. */
-            event.peer->data = NULL;
+                msgpack::object_handle oh =
+                    msgpack::unpack(str.data(), str.size());
+
+                // deserialized object is valid during the msgpack::object_handle instance is alive.
+                msgpack::object deserialized = oh.get();
+
+                auto v2 = deserialized.as<PlayerMove>();
+                std::cout << v2.x << std::endl;
+                std::cout << v2.y << std::endl;
+                std::cout << v2.z << std::endl;
+
+                //cast packet data to struct PlayerPos
+                //PlayerPos* playerPos = 
+                printf("A packet of length %u containing %s was received from %s on channel %u.\n",
+                    event.packet->dataLength,
+                    event.packet->data,
+                    event.peer->data,
+                    event.channelID);
+                /* Clean up the packet now that we're done using it. */
+                enet_packet_destroy(event.packet);
+
+                break;
+            }
+                //msgpack::sbuffer buffer;
+                
+
+            case ENET_EVENT_TYPE_DISCONNECT:
+                printf("%s disconnected.\n", event.peer->data);
+                /* Reset the peer's client information. */
+                event.peer->data = NULL;
         }
     }
 
