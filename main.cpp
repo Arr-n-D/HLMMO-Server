@@ -4,6 +4,7 @@
 #include <chrono>
 #include <thread>
 #include "msgpack.hpp"
+#include <iomanip>
 
 const int TICKS_PER_SECOND = 20;
 
@@ -32,21 +33,19 @@ int OnUpdate(ENetHost* server) {
                 break;
             case ENET_EVENT_TYPE_RECEIVE:
             {
-                std::string str((char*)event.packet->data);
-
-                //print the event.packet->data
-                std::cout << event.packet->data << std::endl;
-
+                //print size of packet
+                printf("A packet of length %u was received.\n", event.packet->dataLength);
+                //std::string str((const char*)event.packet->data);
                 msgpack::object_handle oh =
-                    msgpack::unpack(str.data(), str.size());
+                    msgpack::unpack((const char*)event.packet->data, event.packet->dataLength);
 
                 // deserialized object is valid during the msgpack::object_handle instance is alive.
                 msgpack::object deserialized = oh.get();
 
                 auto v2 = deserialized.as<PlayerMove>();
-                std::cout << v2.x << std::endl;
-                std::cout << v2.y << std::endl;
-                std::cout << v2.z << std::endl;
+                std::cout << std::setprecision(15) << v2.x << std::endl;
+                std::cout << std::setprecision(15) << v2.y << std::endl;
+                std::cout << std::setprecision(15) << v2.z << std::endl;
 
                 //cast packet data to struct PlayerPos
                 //PlayerPos* playerPos = 
