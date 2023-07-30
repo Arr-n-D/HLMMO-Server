@@ -32,7 +32,7 @@ int main()
     
     // Initialize our Core
     Core coreInstance = Core();
-    coreInstance.init();
+    coreInstance.Initialize();
 
         // Main loop
     while (true) {

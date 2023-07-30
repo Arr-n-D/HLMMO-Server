@@ -1,5 +1,7 @@
 #include "Core.h"
 
+using namespace ArrND::NetworkManager;
+
 namespace ArrND::Core {
     Core::Core()
     {
@@ -9,9 +11,12 @@ namespace ArrND::Core {
     {
     }
 
-    void Core::Init()
+    void Core::Initialize()
     {
         this->InitializeSentry();
+
+        this->networkManager = NetworkManager::NetworkManager();
+        this->networkManager.Initialize();
     }
 
     void Core::InitializeSentry()
