@@ -9,9 +9,12 @@ class NetworkManager
 	~NetworkManager();
 
 	void OnUpdate();
+	void Initialize();
 
 	private:
-		void OnMessagedReceived(ENetEvent event);
-		void OnConnect(ENetEvent event);
+		//void OnMessagedReceived(ENetEvent event);
+		//void OnConnect(ENetEvent event);
+		int InitializeEnet();
+		ENetHost* server
 };
 
