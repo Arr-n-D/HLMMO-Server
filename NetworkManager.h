@@ -1,21 +1,22 @@
 #pragma once
 #include "enet.h"
 
-
-class NetworkManager
-{
+class NetworkManager {
 	public:
 		NetworkManager();
 		~NetworkManager();
 
-			void OnUpdate();
-			void Initialize();
+		void OnUpdate();
+		void Initialize();
 
-		private:
-			//void OnMessagedReceived(ENetEvent event);
-			//void OnConnect(ENetEvent event);
-			int InitializeEnet();
-			ENetHost* server;
-			bool serverInitialized = false;
-	};
+	private:
+		void OnEvent(ENetEvent event);
+		void OnMessagedReceived(ENetEvent event);
+		//void HandleMessage(ENetEvent event);
+		//void OnMessagedReceived(ENetEvent event);
+		//void OnConnect(ENetEvent event);
+		int InitializeEnet();
+		ENetHost* server;
+		bool serverInitialized = false;
+};
 

@@ -4,14 +4,13 @@
 
 
 
-#pragma region Public methods
-NetworkManager::NetworkManager()
-{
-}
+    NetworkManager::NetworkManager()
+    {
+    }
 
-NetworkManager::~NetworkManager()
-{
-}
+    NetworkManager::~NetworkManager()
+    {
+    }
 
     void NetworkManager::OnUpdate()
     {
@@ -20,48 +19,12 @@ NetworkManager::~NetworkManager()
 
             while (enet_host_service(this->server, &event, 0))
             {
-                std::cout << "enet_host_service" << std::endl;
-                switch (event.type)
-                {
-                case ENET_EVENT_TYPE_CONNECT:
-                    break;
-                case ENET_EVENT_TYPE_RECEIVE:
-                {
-                    msgpack::object_handle oh =
-                        msgpack::unpack((const char*)event.packet->data, event.packet->dataLength);
-
-                    // deserialized object is valid during the msgpack::object_handle instance is alive.
-                    msgpack::object deserialized = oh.get();
-
-                    auto v2 = deserialized.as<PlayerMove>();
-                    std::cout << std::setprecision(15) << v2.x << std::endl;
-                    std::cout << std::setprecision(15) << v2.y << std::endl;
-                    std::cout << std::setprecision(15) << v2.z << std::endl;
-
-                    //cast packet data to struct PlayerPos
-                    //PlayerPos* playerPos = 
-                    printf("A packet of length %u containing %s was received from %s on channel %u.\n",
-                        event.packet->dataLength,
-                        event.packet->data,
-                        event.peer->data,
-                        event.channelID);
-                    /* Clean up the packet now that we're done using it. */
-                    enet_packet_destroy(event.packet);
-
-                    break;
-                }
-                //msgpack::sbuffer buffer;
-
-
-                case ENET_EVENT_TYPE_DISCONNECT:
-                    printf("%s disconnected.\n", event.peer->data);
-                    /* Reset the peer's client information. */
-                    event.peer->data = NULL;
-                }
+                this->OnEvent(event);
             }
         }
         
     }
+
     void NetworkManager::Initialize()
     {
         if (this->InitializeEnet() == EXIT_SUCCESS)
@@ -76,38 +39,78 @@ NetworkManager::~NetworkManager()
                 0      /* assume any amount of incoming bandwidth */,
                 0      /* assume any amount of outgoing bandwidth */);
 
-        if (this->server == NULL)
-        {
-            fprintf(stderr,
-                "An error occurred while trying to create an ENet server host.\n");
-            //exit(EXIT_FAILURE);
+            if (this->server == NULL)
+            {
+                fprintf(stderr,
+                    "An error occurred while trying to create an ENet server host.\n");
+                //exit(EXIT_FAILURE);
+            }
+			else {
+				this->serverInitialized = true;
+				printf("ENet server initialized.\n");
+			}
         }
-	}
-}
-#pragma endregion
+    }
 
-
-
-#pragma region Private methods
 
 
     void NetworkManager::OnEvent(ENetEvent event)
     {
+        std::cout << "enet_host_service" << std::endl;
+        switch (event.type)
+        {
+            case ENET_EVENT_TYPE_CONNECT:
+                printf("%s connected.\n", event.peer->data);
+                //call on connect
+            break;
+            
+            case ENET_EVENT_TYPE_RECEIVE:
+                //call handle message received
+                this->OnMessagedReceived(event);
+           
+            break;
+            //msgpack::sbuffer buffer;
+
+            case ENET_EVENT_TYPE_DISCONNECT:
+                //call on disconnect
+                printf("%s disconnected.\n", event.peer->data);
+                /* Reset the peer's client information. */
+                event.peer->data = NULL;
+            break;
+        }
     }
 
-int NetworkManager::InitializeEnet()
-{
-    if (enet_initialize() != 0)
+    void NetworkManager::OnMessagedReceived(ENetEvent event)
     {
-        printf("An error occurred while initializing ENet.\n");
-        return EXIT_FAILURE;
-    }
-    else {
-        printf("ENet initialized.\n");
-        return EXIT_SUCCESS;
+        msgpack::object_handle oh = msgpack::unpack((const char*)event.packet->data, event.packet->dataLength);
+
+        // deserialized object is valid during the msgpack::object_handle instance is alive.
+        msgpack::object deserialized = oh.get();
+
+ 
+        printf("A packet of length %u containing %s was received from %s on channel %u.\n",
+            event.packet->dataLength,
+            event.packet->data,
+            event.peer->data,
+            event.channelID);
+        /* Clean up the packet now that we're done using it. */
+        enet_packet_destroy(event.packet);
+
     }
 
-    return 1;
-}
+    int NetworkManager::InitializeEnet()
+    {
+        if (enet_initialize() != 0)
+        {
+            printf("An error occurred while initializing ENet.\n");
+            return EXIT_FAILURE;
+        }
+        else {
+            printf("ENet initialized.\n");
+            return EXIT_SUCCESS;
+        }
 
-#pragma endregion
+        return 1;
+    }
+
+

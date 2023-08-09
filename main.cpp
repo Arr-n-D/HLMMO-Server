@@ -1,6 +1,5 @@
 #include <chrono>
 #include <thread>
-//#include "sentry.h"
 #include "./Core/Core.h"
 
 const int TICKS_PER_SECOND = 20;
@@ -12,7 +11,7 @@ int main()
     
     // Initialize our Core
     Core coreInstance = Core();
-    coreInstance.init();
+    coreInstance.Initialize();
 
         // Main loop
     while (true) {

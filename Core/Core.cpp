@@ -9,7 +9,7 @@
     {
     }
 
-    void Core::Init()
+    void Core::Initialize()
     {
         this->InitializeSentry();
 
@@ -17,10 +17,10 @@
         this->networkManager.Initialize();
     }
 
-   /* void Core::GetNetworkManager()
+    NetworkManager Core::GetNetworkManager()
     {
         return this->networkManager;
-    }*/
+    }
 
     void Core::InitializeSentry()
     {

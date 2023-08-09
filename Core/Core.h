@@ -1,6 +1,6 @@
 #pragma once
-#include "../sentry.h"
 #include "../NetworkManager.h"
+#include "../sentry.h"
 
 
 	class Core {
@@ -8,9 +8,10 @@
 			Core();
 			~Core();
 			void Initialize();
+			NetworkManager GetNetworkManager();
 
 
 		private:
 			void InitializeSentry();
-			NetworkManager::NetworkManager networkManager;
+			NetworkManager networkManager;
 	};
