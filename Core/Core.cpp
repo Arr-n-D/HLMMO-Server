@@ -1,6 +1,6 @@
 #include "Core.h"
 
-namespace ArrND::Core {
+
     Core::Core()
     {
     }
@@ -12,7 +12,15 @@ namespace ArrND::Core {
     void Core::Init()
     {
         this->InitializeSentry();
+
+        this->networkManager = NetworkManager::NetworkManager();
+        this->networkManager.Initialize();
     }
+
+   /* void Core::GetNetworkManager()
+    {
+        return this->networkManager;
+    }*/
 
     void Core::InitializeSentry()
     {
@@ -33,4 +41,3 @@ namespace ArrND::Core {
         sentry_options_set_debug(options, 1);
         sentry_init(options);
     }
-}
