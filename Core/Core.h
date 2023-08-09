@@ -1,19 +1,18 @@
 #pragma once
-#include "../sentry.h"
 #include "../NetworkManager.h"
+#include "../sentry.h"
 
-using namespace ArrND::NetworkManager;
 
-namespace ArrND::Core {
+
 	class Core {
 		public:
 			Core();
 			~Core();
 			void Initialize();
+			NetworkManager GetNetworkManager();
 
 
 		private:
 			void InitializeSentry();
-			NetworkManager::NetworkManager networkManager;
+			NetworkManager networkManager;
 	};
-}
