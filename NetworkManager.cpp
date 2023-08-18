@@ -1,6 +1,7 @@
 #include <iostream>
 #include "msgpack.hpp"
 #include "NetworkManager.h"
+#include "game_messages.h"
 
 
 
@@ -53,14 +54,14 @@
     }
 
 
-
     void NetworkManager::OnEvent(ENetEvent event)
     {
         std::cout << "enet_host_service" << std::endl;
         switch (event.type)
         {
             case ENET_EVENT_TYPE_CONNECT:
-                printf("%s connected.\n", event.peer->data);
+                //printf("%s connected.\n", event.peer->data);
+                this->OnClientConnect(event);
                 //call on connect
             break;
             
@@ -83,9 +84,14 @@
     void NetworkManager::OnMessagedReceived(ENetEvent event)
     {
         msgpack::object_handle oh = msgpack::unpack((const char*)event.packet->data, event.packet->dataLength);
-
         // deserialized object is valid during the msgpack::object_handle instance is alive.
         msgpack::object deserialized = oh.get();
+
+        //deserialized should be of type Packet
+        Packet packet = deserialized.as<Packet>();
+
+        std::cout << "packetType: " << packet.packetType << std::endl;
+        std::cout << "sizeOfMessage: " << packet.sizeOfMessage << std::endl;
 
  
         printf("A packet of length %u containing %s was received from %s on channel %u.\n",
@@ -96,6 +102,21 @@
         /* Clean up the packet now that we're done using it. */
         enet_packet_destroy(event.packet);
 
+    }
+
+    void NetworkManager::OnClientConnect(ENetEvent event)
+    {
+		printf("Client connected with peer id: %s connected.\n", event.peer->incomingPeerID);
+		
+		connectedPlayers.insert(std::pair<int, Player>(event.peer->incomingPeerID, Player(event.peer, this)));
+
+        //print all the peer ids
+        for (auto const& x : connectedPlayers)
+        {
+			std::cout << x.first << std::endl;
+		}
+
+	
     }
 
     int NetworkManager::InitializeEnet()
