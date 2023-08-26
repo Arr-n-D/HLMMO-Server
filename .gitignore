@@ -401,3 +401,4 @@ crashpad_handler.exe
 sentry.dll
 sentry.lib
 .sentry-native
+./boost

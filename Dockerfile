@@ -1,12 +1,7 @@
-FROM ubuntu:22.04
+FROM alpine:3.18 AS build
 
-# Install dependencies
-# We need OpenSSL for DTLS, CMAKE for building, and CURL for downloading the source code
-RUN apt-get update && apt-get install -y \
-    openssl \
-    make \
-    cmake \
-    curl
-
-
-# download boost library 
+RUN apk update && \ 
+    apk add --no-cache \
+        build-base=0.5-r3 \
+        cmake=3.24.3-r0 \
+        boost1.80-dev=1.80.0-r3
