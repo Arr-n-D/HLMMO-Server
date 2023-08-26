@@ -12,6 +12,7 @@ find_package(ENet REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIRS} ${OPENSSL_INCLUDE_DIR} ${ENET_INCLUDE_DIRS} )
 link_directories(${Boost_LIBRARY_DIRS})
+add_subdirectory(sentry)
 
 add_executable(${TARGET} 
     src/main.cpp
@@ -20,7 +21,7 @@ add_executable(${TARGET}
     src/Core/Core.cpp
 )
 
-target_link_libraries(${TARGET} PRIVATE ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} ${ENET_LIBRARIES})
+target_link_libraries(${TARGET} PRIVATE ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} ${ENET_LIBRARIES} sentry)
 
 target_include_directories(${TARGET} PRIVATE
     ${PROJECT_SOURCE_DIR}/include

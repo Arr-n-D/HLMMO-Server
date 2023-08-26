@@ -16,7 +16,9 @@ RUN apt-get update && \
         libboost-all-dev \
         libssl-dev \ 
         # enet lib
-        libenet-dev
+        libenet-dev \ 
+        # curl
+        libcurl4-openssl-dev
 
 WORKDIR /app
 
@@ -24,6 +26,7 @@ WORKDIR /app
 COPY src/ ./src/
 COPY include/ ./include/
 COPY cmake/ ./cmake/
+COPY sentry/ ./sentry/
 COPY CMakeLists.txt .
 
 
@@ -50,7 +53,7 @@ RUN useradd --create-home --shell /bin/bash server-user
 USER server-user
 
 COPY --chown=server-user:server-user --from=build \
-    ./app/build/src/Server \
+    ./app/build/Server \
     ./app/
 
 ENTRYPOINT [ "./app/Server" ]
