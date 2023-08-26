@@ -6,7 +6,8 @@ const int TICKS_PER_SECOND = 20;
 
 int main()
 {
-    
+    printf("Hogwarts Legacy Together Server\n");
+   
     int tickDurationMs = 1000 / TICKS_PER_SECOND;
     
     // Initialize our Core

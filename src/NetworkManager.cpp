@@ -7,6 +7,7 @@
 
     NetworkManager::NetworkManager()
     {
+        printf("NetworkManager created.\n");
     }
 
     NetworkManager::~NetworkManager()
@@ -44,11 +45,11 @@
             {
                 fprintf(stderr,
                     "An error occurred while trying to create an ENet server host.\n");
-                //exit(EXIT_FAILURE);
+                exit(EXIT_FAILURE);
             }
 			else {
 				this->serverInitialized = true;
-				printf("ENet server initialized.\n");
+				printf("Network server initialized.\n");
 			}
         }
     }
