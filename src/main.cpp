@@ -1,6 +1,6 @@
 #include <chrono>
 #include <thread>
-#include "./Core/Core.h"
+#include "Core.h"
 
 const int TICKS_PER_SECOND = 20;
 

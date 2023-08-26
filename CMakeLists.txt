@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 3.18)
+
+set(TARGET Server)
+
+project(${TARGET} VERSION 0.1.0)
+
+find_package(Boost REQUIRED)
+find_package(OpenSSL REQUIRED)
+
+include_directories(${Boost_INCLUDE_DIRS} ${OPENSSL_INCLUDE_DIR}})
+link_directories(${Boost_LIBRARY_DIRS})
+
+add_executable(${TARGET} 
+    src/main.cpp
+    src/NetworkManager.cpp
+    src/Player.cpp
+    src/Core/Core.cpp
+)
+
+
+target_link_libraries(${TARGET} PRIVATE ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES})
+
+target_include_directories(${TARGET} PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/include/enet
+    ${PROJECT_SOURCE_DIR}/include/msgpack
+)
+
