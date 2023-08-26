@@ -13,8 +13,8 @@ enum GameMessageReliability {
 };
 
 enum Channels {
-	MOVEMENT = 0,
-	RPC = 1,
+	MOVE_CHANNEL = 0,
+	RPC_CHANNEL = 1,
 };
 
 struct GameMessageMove {

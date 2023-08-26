@@ -108,13 +108,13 @@
     {
 		printf("Client connected with peer id: %s connected.\n", event.peer->incomingPeerID);
 		
-		connectedPlayers.insert(std::pair<int, Player>(event.peer->incomingPeerID, Player(event.peer, this)));
+		// connectedPlayers.insert(std::pair<int, Player>(event.peer->incomingPeerID, Player(event.peer, this)));
 
-        //print all the peer ids
-        for (auto const& x : connectedPlayers)
-        {
-			std::cout << x.first << std::endl;
-		}
+        // //print all the peer ids
+        // for (auto const& x : connectedPlayers)
+        // {
+		// 	std::cout << x.first << std::endl;
+		// }
 
 	
     }

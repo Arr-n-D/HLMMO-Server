@@ -1,6 +1,6 @@
 #pragma once
 #include "enet.h"
-//#include "game_messages.h"
+#include "game_messages.h"
 
 //class NetworkManager;
 
