@@ -1,12 +1,13 @@
 #include "Player.h"
 //#include "NetworkManager.h"
 
-Player::Player(ENetPeer* peer, NetworkManager* networkManager)
+Player::Player(ENetPeer* peer)
 {
 	this->peer = peer;
-	this->networkManager = networkManager;
 }
 
 Player::~Player()
 {
 }
+
+
