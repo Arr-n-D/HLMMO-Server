@@ -14,5 +14,6 @@
 
 		private:
 			void InitializeSentry();
+			void InitializeDTLS();
 			NetworkManager networkManager;
 	};

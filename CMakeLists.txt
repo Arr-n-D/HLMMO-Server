@@ -18,7 +18,7 @@ add_executable(${TARGET}
     src/main.cpp
     src/NetworkManager.cpp
     src/Player.cpp
-    src/Core/Core.cpp
+    src/Core.cpp
 )
 
 target_link_libraries(${TARGET} PRIVATE ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} ${ENET_LIBRARIES} sentry)

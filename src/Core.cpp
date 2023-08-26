@@ -1,4 +1,6 @@
 #include "Core.h"
+#include <openssl/ssl.h>
+#include <openssl/err.h>
 
 Core::Core()
 {
@@ -11,6 +13,7 @@ Core::~Core()
 void Core::Initialize()
 {
     this->InitializeSentry();
+    this->InitializeDTLS();
 
     this->networkManager.Initialize();
 }
@@ -37,5 +40,15 @@ void Core::InitializeSentry()
 
     // sentry_options_set_handler_path(options, "crashpad_handler.exe");
     sentry_options_set_debug(options, 1);
-    sentry_init(options);
+    if (sentry_init(options) == 0) {
+        printf("Sentry initialized successfully\n");
+    }
+    else {
+       exit(EXIT_FAILURE);
+    }
+}
+
+void Core::InitializeDTLS() {
+    SSL_load_error_strings();
+    SSL_library_init();
 }
