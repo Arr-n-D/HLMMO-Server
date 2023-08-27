@@ -107,8 +107,8 @@ void NetworkManager::OnClientConnect(ENetEvent event)
 
     int err = SSL_accept(ssl);
     if (err <= 0) {
-        int err = SSL_get_error(ssl, err);
-        printf("SSL_accept failed with error %d\n", err);
+        // int err = SSL_get_error(ssl, err);
+        // printf("SSL_accept failed with error %d\n", err);
         // exit(EXIT_FAILURE);
     } else {
         printf("SSL_accept succeeded with error %d\n", err);
