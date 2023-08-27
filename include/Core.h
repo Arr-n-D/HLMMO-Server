@@ -3,17 +3,16 @@
 #include "../sentry.h"
 
 
+class Core {
+	public:
+		Core();
+		~Core();
+		void Initialize();
+		NetworkManager GetNetworkManager();
 
-	class Core {
-		public:
-			Core();
-			~Core();
-			void Initialize();
-			NetworkManager GetNetworkManager();
 
-
-		private:
-			void InitializeSentry();
-			void InitializeDTLS();
-			NetworkManager networkManager;
-	};
+	private:
+		void InitializeSentry();
+		void InitializeDTLS();
+		NetworkManager networkManager;
+};

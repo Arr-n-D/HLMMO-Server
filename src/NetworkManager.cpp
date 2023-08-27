@@ -124,3 +124,7 @@ int NetworkManager::InitializeEnet()
 
     return 1;
 }
+
+SSL_CTX* NetworkManager::GetCtx() {
+    return this->ctx;
+}
