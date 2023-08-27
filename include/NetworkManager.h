@@ -14,13 +14,18 @@ class NetworkManager {
 		std::map<int, Player> connectedPlayers;
 
 	private:
+		ENetHost* server;
+		bool serverInitialized = false;
+		int InitializeEnet();
 		void OnEvent(ENetEvent event);
 		void OnMessagedReceived(ENetEvent event);
 		//void HandleMessage(ENetEvent event);
+
 		void OnClientConnect(ENetEvent event);
 		void OnClientDisconnect(ENetEvent event);
-		int InitializeEnet();
-		ENetHost* server;
-		bool serverInitialized = false;
+
+		
+
+
 };
 

@@ -34,6 +34,7 @@ int main()
     }
     
     sentry_close();
+    
     return 0;
 }
 
