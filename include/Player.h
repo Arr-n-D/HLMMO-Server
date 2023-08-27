@@ -17,7 +17,6 @@ class Player
 
 
 	private:
-		//NetworkManager* networkManager;
 		ENetPeer* peer;
 };
 

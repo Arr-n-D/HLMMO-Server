@@ -1,6 +1,5 @@
 #include "Core.h"
-#include <openssl/ssl.h>
-#include <openssl/err.h>
+
 
 Core::Core()
 {
@@ -13,7 +12,7 @@ Core::~Core()
 void Core::Initialize()
 {
     this->InitializeSentry();
-    this->InitializeDTLS();
+  
 
     this->networkManager.Initialize();
 }
@@ -46,30 +45,4 @@ void Core::InitializeSentry()
     else {
        exit(EXIT_FAILURE);
     }
-}
-
-void Core::InitializeDTLS() {
-    SSL_load_error_strings();
-    SSL_library_init();
-
-    if (this->networkManager.GetCtx() == NULL) {
-        printf("Failed to initialize DTLS\n");
-        exit(EXIT_FAILURE);
-    }
-    else {
-        printf("DTLS initialized successfully\n");
-    }
-
-    // Load our certificate and key
-    // if (SSL_CTX_use_PrivateKey_file(this->networkManager.GetCtx(), "private_key.pem", SSL_FILETYPE_PEM) <= 0) {
-    //     ERR_print_errors_fp(stderr);
-    //     exit(EXIT_FAILURE);
-    // }
-
-    // if (SSL_CTX_use_certificate_file(this->networkManager.GetCtx(), "certificate.pem", SSL_FILETYPE_PEM) <= 0) {
-    //     ERR_print_errors_fp(stderr);
-    //     exit(EXIT_FAILURE);
-    // }
-
-    
 }

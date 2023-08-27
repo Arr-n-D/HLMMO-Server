@@ -100,21 +100,6 @@ void NetworkManager::OnClientConnect(ENetEvent event)
 {
     printf("Client connected with peer id: %s connected.\n", event.peer->incomingPeerID);
 
-    SSL *ssl = SSL_new(this->ctx);
-
-    event.peer->data = ssl;
-    SSL_set_fd(ssl, event.peer->incomingPeerID);
-
-    int err = SSL_accept(ssl);
-    if (err <= 0) {
-        // int err = SSL_get_error(ssl, err);
-        // printf("SSL_accept failed with error %d\n", err);
-        // exit(EXIT_FAILURE);
-    } else {
-        printf("SSL_accept succeeded with error %d\n", err);
-        connectedPlayers.insert(std::pair<int, Player>(event.peer->incomingPeerID, Player(event.peer)));
-    }
-
     // connectedPlayers.insert(std::pair<int, Player>(event.peer->incomingPeerID, Player(event.peer, this)));
 
     // //print all the peer ids
