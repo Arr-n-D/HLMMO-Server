@@ -61,15 +61,15 @@ void Core::InitializeDTLS() {
     }
 
     // Load our certificate and key
-    if (SSL_CTX_use_PrivateKey_file(this->networkManager.GetCtx(), "private_key.pem", SSL_FILETYPE_PEM) <= 0) {
-        ERR_print_errors_fp(stderr);
-        exit(EXIT_FAILURE);
-    }
+    // if (SSL_CTX_use_PrivateKey_file(this->networkManager.GetCtx(), "private_key.pem", SSL_FILETYPE_PEM) <= 0) {
+    //     ERR_print_errors_fp(stderr);
+    //     exit(EXIT_FAILURE);
+    // }
 
-    if (SSL_CTX_use_certificate_file(this->networkManager.GetCtx(), "certificate.crt", SSL_FILETYPE_PEM) <= 0) {
-        ERR_print_errors_fp(stderr);
-        exit(EXIT_FAILURE);
-    }
+    // if (SSL_CTX_use_certificate_file(this->networkManager.GetCtx(), "certificate.pem", SSL_FILETYPE_PEM) <= 0) {
+    //     ERR_print_errors_fp(stderr);
+    //     exit(EXIT_FAILURE);
+    // }
 
     
 }
