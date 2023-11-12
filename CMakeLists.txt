@@ -6,9 +6,11 @@ project(${TARGET} VERSION 0.1.0)
 
 find_package(Boost REQUIRED)
 find_package(OpenSSL REQUIRED)
+# find_package(GameNetworkingSockets REQUIRED)
 
-include_directories(${Boost_INCLUDE_DIRS} ${OPENSSL_INCLUDE_DIR} ${GAME_NETWORK_SOCEKTS_INCLUDE_DIRS})
+include_directories(${Boost_INCLUDE_DIRS} ${OPENSSL_INCLUDE_DIR} ${GAME_NETWORK_SOCKETS_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})
+link_directories(${PROJECT_SOURCE_DIR}/libs)
 add_subdirectory(sentry)
 add_subdirectory(GameNetworkingSockets)
 
@@ -23,6 +25,7 @@ target_link_libraries(${TARGET} PRIVATE ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} 
 
 target_include_directories(${TARGET} PRIVATE
     ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/include/steam
     ${PROJECT_SOURCE_DIR}/include/msgpack
 )
 

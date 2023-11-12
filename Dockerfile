@@ -9,7 +9,8 @@ RUN apt-get update && \
         libssl-dev \ 
         # curl
         libcurl4-openssl-dev \ 
-        libprotobuf-dev protobuf-compiler
+        libprotobuf-dev protobuf-compiler \ 
+        ninja-build
 
 WORKDIR /app
 
@@ -19,12 +20,12 @@ COPY include/ ./include/
 COPY sentry/ ./sentry/
 COPY GameNetworkingSockets ./GameNetworkingSockets/
 COPY CMakeLists.txt .
-
+COPY libs/ ./libs/
 
 WORKDIR /app/build
+
 RUN cmake -DCMAKE_BUILD_TYPE=Debug .. && \
     cmake --build . --parallel 8
-
 
 FROM ubuntu:22.04 AS release
 
@@ -45,5 +46,9 @@ USER server-user
 COPY --chown=server-user:server-user --from=build \
     ./app/build/Server \
     ./app/
+    
+COPY --chown=server-user:server-user --from=build \
+    ./app/build/bin/libGameNetworkingSockets.so \
+    ./app/libs/libGameNetworkingSockets.so
 
 ENTRYPOINT [ "./app/Server" ]
