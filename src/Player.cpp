@@ -1,9 +1,8 @@
 #include "Player.h"
-//#include "NetworkManager.h"
 
-Player::Player(ENetPeer* peer)
+Player::Player()
 {
-	this->peer = peer;
+	// this->peer = peer;
 }
 
 Player::~Player()

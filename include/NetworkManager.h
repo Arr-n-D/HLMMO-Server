@@ -1,6 +1,11 @@
 #pragma once
 #include "Player.h"
 #include <map>
+#include <steam/steamnetworkingsockets.h>
+#include <steam/isteamnetworkingutils.h>
+#ifndef STEAMNETWORKINGSOCKETS_OPENSOURCE
+	#include <steam/steam_api.h>
+#endif
 
 
 class NetworkManager {
@@ -11,21 +16,23 @@ class NetworkManager {
 		void OnUpdate();
 		void Initialize();
 
-		std::map<int, Player> connectedPlayers;
+		std::map<int, Player> m_ConnectedPlayers;
+
+		SteamNetworkingMicroseconds  m_LogTimeZero;
 
 	private:
 		
 
-		bool serverInitialized = false;
+		bool m_ServerInitialized = false;
 
-		int InitializeEnet();
+		int InitializeNetworkingLibrary();
 
-		void OnEvent(ENetEvent event);
-		void OnMessagedReceived(ENetEvent event);
+		void OnEvent();
+		void OnMessagedReceived();
 		//void HandleMessage(ENetEvent event);
 
-		void OnClientConnect(ENetEvent event);
-		void OnClientDisconnect(ENetEvent event);
+		void OnClientConnect();
+		void OnClientDisconnect();
 
 		
 

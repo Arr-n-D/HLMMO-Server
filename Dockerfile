@@ -16,7 +16,6 @@ WORKDIR /app
 # Copy source code
 COPY src/ ./src/
 COPY include/ ./include/
-COPY cmake/ ./cmake/
 COPY sentry/ ./sentry/
 COPY GameNetworkingSockets ./GameNetworkingSockets/
 COPY CMakeLists.txt .

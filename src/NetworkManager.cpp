@@ -14,7 +14,7 @@ NetworkManager::~NetworkManager()
 
 void NetworkManager::OnUpdate()
 {
-    if (this->serverInitialized) {
+    if (this->m_ServerInitialized) {
         // ENetEvent event;
 
         // while (enet_host_service(this->server, &event, 0))
@@ -26,7 +26,7 @@ void NetworkManager::OnUpdate()
 
 void NetworkManager::Initialize()
 {
-    if (this->InitializeEnet() == EXIT_SUCCESS) {
+    if (this->InitializeNetworkingLibrary() == EXIT_SUCCESS) {
         // ENetAddress address;
 
         // enet_address_set_host(&address, "localhost");
@@ -49,82 +49,58 @@ void NetworkManager::Initialize()
     }
 }
 
-void NetworkManager::OnEvent(ENetEvent event)
+void NetworkManager::OnEvent()
 {
-    std::cout << "enet_host_service" << std::endl;
-    switch (event.type) {
-        case ENET_EVENT_TYPE_CONNECT:
-            // printf("%s connected.\n", event.peer->data);
-            this->OnClientConnect(event);
-            // call on connect
-            break;
 
-        case ENET_EVENT_TYPE_RECEIVE:
-            // call handle message received
-            this->OnMessagedReceived(event);
-
-            break;
-            // msgpack::sbuffer buffer;
-
-        case ENET_EVENT_TYPE_DISCONNECT:
-            // call on disconnect
-            printf("%s disconnected.\n", event.peer->data);
-            /* Reset the peer's client information. */
-            event.peer->data = NULL;
-            break;
-        }
 }
 
-void NetworkManager::OnMessagedReceived(ENetEvent event)
+void NetworkManager::OnMessagedReceived()
 {
-    msgpack::object_handle oh = msgpack::unpack((const char *)event.packet->data, event.packet->dataLength);
-    // deserialized object is valid during the msgpack::object_handle instance is alive.
-    msgpack::object deserialized = oh.get();
+    // msgpack::object_handle oh = msgpack::unpack((const char *)event.packet->data, event.packet->dataLength);
+    // // deserialized object is valid during the msgpack::object_handle instance is alive.
+    // msgpack::object deserialized = oh.get();
 
-    // deserialized should be of type Packet
-    Packet packet = deserialized.as<Packet>();
+    // // deserialized should be of type Packet
+    // Packet packet = deserialized.as<Packet>();
 
-    std::cout << "packetType: " << packet.packetType << std::endl;
-    std::cout << "sizeOfMessage: " << packet.sizeOfMessage << std::endl;
+    // std::cout << "packetType: " << packet.packetType << std::endl;
+    // std::cout << "sizeOfMessage: " << packet.sizeOfMessage << std::endl;
 
-    printf("A packet of length %u containing %s was received from %s on channel %u.\n",
-           event.packet->dataLength,
-           event.packet->data,
-           event.peer->data,
-           event.channelID);
-    /* Clean up the packet now that we're done using it. */
-    enet_packet_destroy(event.packet);
+    // printf("A packet of length %u containing %s was received from %s on channel %u.\n",
+    //        event.packet->dataLength,
+    //        event.packet->data,
+    //        event.peer->data,
+    //        event.channelID);
+    // /* Clean up the packet now that we're done using it. */
+  
 }
 
-void NetworkManager::OnClientConnect(ENetEvent event)
+void NetworkManager::OnClientConnect()
 {
-    printf("Client connected with peer id: %s connected.\n", event.peer->incomingPeerID);
+    // printf("Client connected with peer id: %s connected.\n", event.peer->incomingPeerID);
 
-    // connectedPlayers.insert(std::pair<int, Player>(event.peer->incomingPeerID, Player(event.peer, this)));
+    // // connectedPlayers.insert(std::pair<int, Player>(event.peer->incomingPeerID, Player(event.peer, this)));
 
-    // //print all the peer ids
-    // for (auto const& x : connectedPlayers)
-    // {
-    // 	std::cout << x.first << std::endl;
-    // }
+    // // //print all the peer ids
+    // // for (auto const& x : connectedPlayers)
+    // // {
+    // // 	std::cout << x.first << std::endl;
+    // // }
 }
 
-int NetworkManager::InitializeEnet()
+int NetworkManager::InitializeNetworkingLibrary()
 {
-    if (enet_initialize() != 0)
-    {
-        printf("An error occurred while initializing ENet.\n");
+    SteamDatagramErrMsg errMsg;
+
+    if (!GameNetworkingSockets_Init(nullptr, errMsg)) {
+        printf("GameNetworkingSockets_Init failed.  %s", errMsg);
         return EXIT_FAILURE;
     }
-    else
-    {
-        printf("ENet initialized.\n");
+    else {
+        printf("GameNetworkingSockets_Init successful.\n");
+        this->m_LogTimeZero = SteamNetworkingUtils()->GetLocalTimestamp();
         return EXIT_SUCCESS;
     }
 
     return 1;
-}
-
-SSL_CTX* NetworkManager::GetCtx() {
-    return this->ctx;
 }

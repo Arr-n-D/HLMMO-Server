@@ -1,12 +1,10 @@
 #pragma once
 #include "game_messages.h"
 
-//class NetworkManager;
-
 class Player
 {
 	public: 
-		Player(ENetPeer* peer);
+		Player();
 		~Player();
 
 		//void SendMessage(const char* message);
@@ -16,6 +14,6 @@ class Player
 
 
 	private:
-		ENetPeer* peer;
+		
 };
 
