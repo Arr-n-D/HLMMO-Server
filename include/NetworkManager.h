@@ -1,5 +1,4 @@
 #pragma once
-#include "enet.h"
 #include "Player.h"
 #include <map>
 
@@ -15,7 +14,7 @@ class NetworkManager {
 		std::map<int, Player> connectedPlayers;
 
 	private:
-		ENetHost* server;
+		
 
 		bool serverInitialized = false;
 

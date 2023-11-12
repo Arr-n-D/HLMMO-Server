@@ -15,37 +15,37 @@ NetworkManager::~NetworkManager()
 void NetworkManager::OnUpdate()
 {
     if (this->serverInitialized) {
-        ENetEvent event;
+        // ENetEvent event;
 
-        while (enet_host_service(this->server, &event, 0))
-        {
-            this->OnEvent(event);
-        }
+        // while (enet_host_service(this->server, &event, 0))
+        // {
+        //     this->OnEvent(event);
+        // }
     }
 }
 
 void NetworkManager::Initialize()
 {
     if (this->InitializeEnet() == EXIT_SUCCESS) {
-        ENetAddress address;
+        // ENetAddress address;
 
-        enet_address_set_host(&address, "localhost");
-        address.port = 9500;
-        this->server = enet_host_create(&address /* the address to bind the server host to */,
-                                        32 /* allow up to 32 clients and/or outgoing connections */,
-                                        2 /* allow up to 2 channels to be used, 0 and 1 */,
-                                        0 /* assume any amount of incoming bandwidth */,
-                                        0 /* assume any amount of outgoing bandwidth */);
+        // enet_address_set_host(&address, "localhost");
+        // address.port = 9500;
+        // this->server = enet_host_create(&address /* the address to bind the server host to */,
+        //                                 32 /* allow up to 32 clients and/or outgoing connections */,
+        //                                 2 /* allow up to 2 channels to be used, 0 and 1 */,
+        //                                 0 /* assume any amount of incoming bandwidth */,
+        //                                 0 /* assume any amount of outgoing bandwidth */);
 
-        if (this->server == NULL) {
-            fprintf(stderr,
-                    "An error occurred while trying to create an ENet server host.\n");
-            exit(EXIT_FAILURE);
-        }
-        else {
-            this->serverInitialized = true;
-            printf("Network server initialized.\n");
-        }
+        // if (this->server == NULL) {
+        //     fprintf(stderr,
+        //             "An error occurred while trying to create an ENet server host.\n");
+        //     exit(EXIT_FAILURE);
+        // }
+        // else {
+        //     this->serverInitialized = true;
+        //     printf("Network server initialized.\n");
+        // }
     }
 }
 

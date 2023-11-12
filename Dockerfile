@@ -7,10 +7,9 @@ RUN apt-get update && \
         cmake \
         libboost-all-dev \
         libssl-dev \ 
-        # enet lib
-        libenet-dev \ 
         # curl
-        libcurl4-openssl-dev
+        libcurl4-openssl-dev \ 
+        libprotobuf-dev protobuf-compiler
 
 WORKDIR /app
 
@@ -19,6 +18,7 @@ COPY src/ ./src/
 COPY include/ ./include/
 COPY cmake/ ./cmake/
 COPY sentry/ ./sentry/
+COPY GameNetworkingSockets ./GameNetworkingSockets/
 COPY CMakeLists.txt .
 
 
@@ -34,7 +34,7 @@ RUN apt-get update && \
     apt-get install -y \
         libboost-all-dev \
         libssl-dev \
-        libenet-dev \ 
+        libprotobuf-dev protobuf-compiler \ 
         libcurl4-openssl-dev        
 
 RUN useradd --create-home --shell /bin/bash server-user
