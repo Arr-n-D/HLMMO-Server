@@ -5,11 +5,4 @@ services:
     build: .
     ports:
       - "9500:9500"
-    # volumes:
-    #   - .:/app
     tty: true
-    # environment:
-    #   - FLASK_ENV=development
-    #   - FLASK_APP=app.py
-    
- 
